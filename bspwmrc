@@ -1,0 +1,39 @@
+#! /bin/sh
+
+# Adding the w flag (wait) slows down the script
+# as it must wait for the proccess to end, but helps
+# in making sure it behaves as expected.
+killall -q -w polybar
+killall -q -w picom
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+bspc monitor -d I II III IV V VI VII VIII
+feh --bg-fill /usr/share/backgrounds/wallpaper.png
+
+bspc config focus_follows_pointer true
+bspc config border_width         0
+
+$HOME/.config/bspwm/gapped-mode.sh setup
+$HOME/.config/bspwm/padded-mode.sh setup
+$HOME/.config/bspwm/toggle-window-start-state.sh setup
+$HOME/.config/bspwm/floating-window-default-sizes.sh
+
+bspc config split_ratio          0.50
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+bspc config presel_feedback_color '#f2e0ce'
+
+# Opens polybar on each monitor found by xrandr.
+if type "xrandr"; then
+	for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+		MONITOR=$m polybar --reload example &
+	done
+else
+	polybar --reload example &
+fi
+
+# Start picom, the experimental-backends flag is 
+# required for some features.
+picom --experimental-backends
+
