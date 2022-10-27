@@ -1,0 +1,8 @@
+[module/default-window-state]
+type = custom/script
+exec = $HOME/.config/bspwm/get-default-window-state.sh
+label = %output%
+click-left = $HOME/.config/bspwm/toggle-window-start-state.sh
+interval = 0.2
+label-foreground = ${colors.secondary}
+
