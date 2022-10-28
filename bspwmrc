@@ -8,7 +8,7 @@ killall -q -w picom
 
 pgrep -x sxhkd > /dev/null || sxhkd &
 bspc monitor -d I II III IV V VI VII VIII
-feh --bg-fill /usr/share/backgrounds/wallpaper.png
+feh --bg-fill /usr/share/backgrounds/Big\ Sur\ 8.png
 
 bspc config focus_follows_pointer true
 bspc config border_width         0
@@ -17,6 +17,7 @@ $HOME/.config/bspwm/gapped-mode.sh setup
 $HOME/.config/bspwm/padded-mode.sh setup
 $HOME/.config/bspwm/toggle-window-start-state.sh setup
 $HOME/.config/bspwm/floating-window-default-sizes.sh
+$HOME/.config/bspwm/macOS-dynamic-wallpaper-imitation.sh > /dev/null & disown
 
 bspc config split_ratio          0.50
 bspc config borderless_monocle   true
