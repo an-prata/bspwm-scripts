@@ -9,7 +9,7 @@ killall -q -w picom
 pgrep -x sxhkd > /dev/null || sxhkd &
 bspc monitor -d I II III IV V VI VII VIII
 
-bspc config focus_follows_pointer 	true
+#bspc config focus_follows_pointer 	true
 bspc config border_width         	1
 bspc config normal_border_color		'#35353b'
 bspc config active_border_color		'#35353b'
@@ -20,7 +20,8 @@ $HOME/.config/bspwm/padded-mode.sh setup
 $HOME/.config/bspwm/toggle-window-start-state.sh setup
 $HOME/.config/bspwm/floating-window-default-sizes.sh
 
-feh --bg-fill /usr/share/backgrounds/Cream.png
+#feh --bg-fill /usr/share/backgrounds/Cream.png
+set-wallpaper
 
 bspc config split_ratio          0.50
 bspc config borderless_monocle   true
