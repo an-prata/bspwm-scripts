@@ -1,5 +1,28 @@
 #! /bin/sh
 
+INTERNAL_MONITOR="eDP1"
+EXTERNAL_MONITOR="HDMI1"
+
+monitor_add() {
+  for desktop in $(bspc query -D --names -m "$INTERNAL_MONITOR" | tail -n 4); do
+    bspc desktop "$desktop" --to-monitor "$EXTERNAL_MONITOR"
+  done
+
+  bspc desktop Desktop --remove
+  bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR" 
+}
+
+monitor_remove() {
+  bspc monitor "$EXTERNAL_MONITOR" -a Desktop
+
+  for desktop in $(bspc query -D -m "$EXTERNAL_MONITOR");	do
+    bspc desktop "$desktop" --to-monitor "$INTERNAL_MONITOR"
+  done
+
+  bspc desktop Desktop --remove
+  bspc monitor "$INTERNAL_MONITOR" -o I II III IV V VI VII VIII
+}
+
 # Adding the w flag (wait) slows down the script
 # as it must wait for the proccess to end, but helps
 # in making sure it behaves as expected.
@@ -7,7 +30,31 @@ killall -q -w polybar
 killall -q -w picom
 
 pgrep -x sxhkd > /dev/null || sxhkd &
-bspc monitor -d I II III IV V VI VII VIII
+
+if [[ "$1" = 0 ]]; then
+  if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
+    bspc monitor "$INTERNAL_MONITOR" -d I II III IV 
+    bspc monitor "$EXTERNAL_MONITOR" -d V VI VII VIII
+    bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR" 
+  else
+    bspc monitor "$INTERNAL_MONITOR" -d I II III IV V VI VII VIII
+  fi
+fi
+
+if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
+  xrandr --output "$INTERNAL_MONITOR" --mode 1920x1080 --pos 0x0 --rotate normal --output "$EXTERNAL_MONITOR" --primary --mode 1920x1080 --pos 1920x0 --rotate normal
+  if [[ $(bspc query -D -m "${EXTERNAL_MONITOR}" | wc -l) -ne 5 ]]; then
+    monitor_add
+  fi
+  bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR"  
+else
+  xrandr --output "$INTERNAL_MONITOR" --primary --mode 1920x1080 --pos 0x0 --rotate normal --output "$EXTERNAL_MONITOR" --off
+  if [[ $(bspc query -D -m "${INTERNAL_MONITOR}" | wc -l) -ne 10 ]]; then
+    monitor_remove
+  fi
+fi
+
+#bspc monitor -d I II III IV V VI VII VIII
 
 #bspc config focus_follows_pointer 	true
 bspc config border_width         	1
