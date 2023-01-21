@@ -55,7 +55,7 @@ else
 fi
 
 #bspc monitor -d I II III IV V VI VII VIII
-
+bspc monitor -a 9
 #bspc config focus_follows_pointer 	true
 bspc config border_width         	1
 bspc config normal_border_color		'#35353b'
