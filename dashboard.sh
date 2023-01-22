@@ -26,8 +26,14 @@ polybar-msg cmd hide
 
 # kitty --class dash-back --override background=#cca37a -e ~/.config/bspwm/hold.sh &
 # sleep 0.1
+
+# sleep is for animation type thing
 kitty --class dash-miniplayer -e miniplayer &
+sleep 0.2
 kitty --class dash-simplest-fetch -e simplest-fetch &
+sleep 0.2
 kitty --class dash-tty-clock -e tty-clock -t -C 3 &
+sleep 0.2
 kitty --class dash-cava -e cava &
+sleep 0.2
 
