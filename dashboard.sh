@@ -14,6 +14,7 @@ if [ "$(cat /tmp/dash-state)" == "open" ]; then
     pkill -f "kitty --class dash-simplest-fetch"
     pkill -f "kitty --class dash-tty-clock"
     pkill -f "kitty --class dash-cava"
+    polybar-msg cmd show
     # pkill -f "kitty --class dash-back"
     exit
 fi
@@ -21,6 +22,7 @@ fi
 echo "open" > /tmp/dash-state
 echo "$(bspc query -D -d focused --names)" > /tmp/dash-desk
 bspc desktop -f '^9'
+polybar-msg cmd hide
 
 # kitty --class dash-back --override background=#cca37a -e ~/.config/bspwm/hold.sh &
 # sleep 0.1
