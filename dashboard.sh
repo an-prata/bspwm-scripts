@@ -8,7 +8,7 @@ bspc rule -a "dash-cava" state=floating rectangle=429x240+329+174
 
 if [ "$(cat /tmp/dash-state)" == "open" ]; then
     set-wallpaper
-    bspc desktop -f "$(cat /tmp/dash-desk)"
+    # bspc desktop -f "$(cat /tmp/dash-desk)"
     rm /tmp/dash-desk
     rm /tmp/dash-state
     pkill -f "kitty --class dash-miniplayer"
@@ -23,7 +23,7 @@ fi
 
 echo "open" > /tmp/dash-state
 echo "$(bspc query -D -d focused --names)" > /tmp/dash-desk
-bspc desktop -f '^9'
+# bspc desktop -f '^9'
 polybar-msg cmd hide
 
 # kitty --class dash-back --override background=#cca37a -e ~/.config/bspwm/hold.sh &
