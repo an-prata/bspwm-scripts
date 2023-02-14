@@ -17,6 +17,7 @@ if [ "$(cat /tmp/dash-state)" == "open" ]; then
     pkill -f "kitty --class dash-cava"
     polybar-msg cmd show
     # pkill -f "kitty --class dash-back"
+    while bspc node any.hidden.window -g hidden=off; do :; done
     exit
 fi
 
@@ -28,6 +29,7 @@ polybar-msg cmd hide
 # kitty --class dash-back --override background=#cca37a -e ~/.config/bspwm/hold.sh &
 # sleep 0.1
 
+while bspc node 'any.!hidden.window' -g hidden=on; do :; done
 set-wallpaper --blur
 
 # sleep is for animation type thing
