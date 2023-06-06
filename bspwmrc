@@ -1,28 +1,5 @@
 #! /bin/sh
 
-INTERNAL_MONITOR="eDP1"
-EXTERNAL_MONITOR="HDMI1"
-
-monitor_add() {
-  for desktop in $(bspc query -D --names -m "$INTERNAL_MONITOR" | tail -n 4); do
-    bspc desktop "$desktop" --to-monitor "$EXTERNAL_MONITOR"
-  done
-
-  bspc desktop Desktop --remove
-  bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR" 
-}
-
-monitor_remove() {
-  bspc monitor "$EXTERNAL_MONITOR" -a Desktop
-
-  for desktop in $(bspc query -D -m "$EXTERNAL_MONITOR");	do
-    bspc desktop "$desktop" --to-monitor "$INTERNAL_MONITOR"
-  done
-
-  bspc desktop Desktop --remove
-  bspc monitor "$INTERNAL_MONITOR" -o I II III IV V VI VII VIII
-}
-
 # Adding the w flag (wait) slows down the script
 # as it must wait for the proccess to end, but helps
 # in making sure it behaves as expected.
@@ -31,32 +8,20 @@ killall -q -w picom
 
 pgrep -x sxhkd > /dev/null || sxhkd &
 
-if [[ "$1" = 0 ]]; then
-  if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
-    bspc monitor "$INTERNAL_MONITOR" -d I II III IV 
-    bspc monitor "$EXTERNAL_MONITOR" -d V VI VII VIII
-    bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR" 
-  else
-    bspc monitor "$INTERNAL_MONITOR" -d I II III IV V VI VII VIII
-  fi
-fi
+MONITORS=$(xrandr | grep " connected " | awk '{ print$1 }')
+MONITORS=(${MONITORS//$'\n'/ })
 
-if [[ $(xrandr -q | grep "${EXTERNAL_MONITOR} connected") ]]; then
-  xrandr --output "$INTERNAL_MONITOR" --mode 1920x1080 --pos 0x0 --rotate normal --output "$EXTERNAL_MONITOR" --primary --mode 1920x1080 --pos 1920x0 --rotate normal
-  if [[ $(bspc query -D -m "${EXTERNAL_MONITOR}" | wc -l) -ne 5 ]]; then
-    monitor_add
-  fi
-  bspc wm -O "$INTERNAL_MONITOR" "$EXTERNAL_MONITOR"  
-else
-  xrandr --output "$INTERNAL_MONITOR" --primary --mode 1920x1080 --pos 0x0 --rotate normal --output "$EXTERNAL_MONITOR" --off
-  if [[ $(bspc query -D -m "${INTERNAL_MONITOR}" | wc -l) -ne 10 ]]; then
-    monitor_remove
-  fi
-fi
+DESKTOPS=("I" "II" "III" "IV" "V" "VI" "VII" "VIII")
+DESKTOPS_PER_MONITOR=$(( 8 / ${#MONITORS[@]} ))
+CURRENT_DESKTOP=0
 
-#bspc monitor -d I II III IV V VI VII VIII
+for MONITOR in ${MONITORS[@]}
+do
+  bspc monitor $MONITOR -d ${DESKTOPS[@]:$CURRENT_DESKTOP:(($CURRENT_DESKTOP+$DESKTOPS_PER_MONITOR))}
+  ((CURRENT_DESKTOP=$CURRENT_DESKTOP+$DESKTOPS_PER_MONITOR))
+done
+
 bspc monitor -a 9
-#bspc config focus_follows_pointer 	true
 bspc config border_width         	1
 bspc config normal_border_color		'#323232'
 bspc config active_border_color		'#464646'
@@ -67,13 +32,11 @@ $HOME/.config/bspwm/padded-mode.sh setup
 $HOME/.config/bspwm/toggle-window-start-state.sh setup
 $HOME/.config/bspwm/floating-window-default-sizes.sh
 
-#feh --bg-fill /usr/share/backgrounds/Cream.png
 set-wallpaper
 
 bspc config split_ratio          0.50
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
-
 bspc config presel_feedback_color '#f2e0ce'
 
 # Opens polybar on each monitor found by xrandr.
