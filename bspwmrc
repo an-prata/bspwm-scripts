@@ -21,7 +21,6 @@ do
   ((CURRENT_DESKTOP=$CURRENT_DESKTOP+$DESKTOPS_PER_MONITOR))
 done
 
-bspc monitor -a 9
 bspc config border_width         	1
 bspc config normal_border_color		'#323232'
 bspc config active_border_color		'#464646'
@@ -40,8 +39,10 @@ bspc config gapless_monocle      true
 bspc config presel_feedback_color '#f2e0ce'
 
 # Opens polybar on each monitor found by xrandr.
-if type "xrandr"; then
-	for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+if type "xrandr"
+then
+	for m in $(xrandr --query | grep " connected" | cut -d" " -f1)
+	do
 		MONITOR=$m polybar --reload example &
 	done
 else
