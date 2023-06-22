@@ -1,10 +1,9 @@
 #!/usr/bin/bash
 
-bspc rule -a "dash-miniplayer" state=floating rectangle=486x732+1131+174
-bspc rule -a "dash-fetch" state=floating rectangle=776x466+329+440
-bspc rule -a "dash-peaclock" state=floating rectangle=320x240+786+174
-bspc rule -a "dash-cava" state=floating rectangle=429x240+329+174
-# bspc rule -a "dash-back" state=floating rectangle=1920x1080+0+0
+bspc rule -a "dash-miniplayer"  state=floating  rectangle=486x732+1131+174
+bspc rule -a "dash-fetch"       state=floating  rectangle=776x466+329+440
+bspc rule -a "dash-peaclock"    state=floating  rectangle=320x240+786+174
+bspc rule -a "dash-cava"        state=floating  rectangle=429x240+329+174
 
 if [ "$(cat /tmp/dash-state)" == "open" ]; then
     set-wallpaper
