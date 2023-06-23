@@ -31,7 +31,7 @@ $HOME/.config/bspwm/padded-mode.sh setup
 $HOME/.config/bspwm/toggle-window-start-state.sh setup
 $HOME/.config/bspwm/floating-window-default-sizes.sh
 
-set-wallpaper
+$HOME/.config/bspwm/set-wallpaper
 
 bspc config split_ratio          0.50
 bspc config borderless_monocle   true
@@ -48,6 +48,10 @@ then
 else
 	polybar --reload example &
 fi
+
+# Make folders for temporary items
+mkdir -p /tmp/Temporary\ Downloads/
+mkdir -p /tmp/Temporary\ Screenshots/
 
 # Start picom, the experimental-backends flag is 
 # required for some features.
