@@ -6,7 +6,7 @@ bspc rule -a "dash-peaclock"    state=floating  rectangle=320x240+786+174
 bspc rule -a "dash-cava"        state=floating  rectangle=429x240+329+174
 
 if [ "$(cat /tmp/dash-state)" == "open" ]; then
-    set-wallpaper
+    ~/.config/bspwm/set-wallpaper.sh
     # bspc desktop -f "$(cat /tmp/dash-desk)"
     rm /tmp/dash-desk
     rm /tmp/dash-state
@@ -29,7 +29,7 @@ polybar-msg cmd hide
 # sleep 0.1
 
 while bspc node 'any.!hidden.window' -g hidden=on; do :; done
-set-wallpaper --blur
+~/.config/bspwm/set-wallpaper.sh --blur
 
 # sleep is for animation type thing
 kitty --class dash-miniplayer -e miniplayer &
