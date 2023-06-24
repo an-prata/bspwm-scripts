@@ -31,7 +31,7 @@ $HOME/.config/bspwm/padded-mode.sh setup
 $HOME/.config/bspwm/toggle-window-start-state.sh setup
 $HOME/.config/bspwm/floating-window-default-sizes.sh
 
-$HOME/.config/bspwm/set-wallpaper
+$HOME/.config/bspwm/set-wallpaper.sh
 
 bspc config split_ratio          0.50
 bspc config borderless_monocle   true
